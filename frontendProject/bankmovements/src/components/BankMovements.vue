@@ -128,5 +128,4 @@ export default {
 </script>
 
 <style scoped>
-/* Agrega estilos CSS si es necesario */
 </style>
