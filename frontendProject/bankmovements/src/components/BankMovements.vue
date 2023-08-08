@@ -23,11 +23,11 @@
         </thead>
         <tbody>
           <tr v-for="(item, index) in items" :key="index">
-            <td class="text-start" @click="editItem(item, index)">{{ item[0] }}</td>
+            <td class="text-center" @click="editItem(item, index)">{{ item[0] }}</td>
             <td class="text-start" @click="editItem(item, index)">{{ item[1] }}</td>
-            <td class="text-start" @click="editItem(item, index)">{{ item[2] }}</td>
-            <td class="text-start" @click="editItem(item, index)">{{ item[3] }}</td>
-            <td class="text-start" @click="editItem(item, index)">{{ item[4] }}</td>
+            <td class="text-center" @click="editItem(item, index)">PEN</td>
+            <td class="text-start" @click="editItem(item, index)">{{ convertToPEN(item) }}</td>
+            <td class="text-center" @click="editItem(item, index)">{{ item[4] }}</td>
             
             <td>
               <button @click="deleteItem(index)" class="btn btn-danger">Eliminar</button>
@@ -54,9 +54,9 @@ export default {
     return {
       items: [],
       tipoDeCambio: [
-        { fecha: '2023-05-28', venta: 3.675, compra: 3.671 },
-        { fecha: '2023-05-29', venta: 3.678, compra: 3.674 },
-        { fecha: '2023-05-30', venta: 3.68, compra: 3.667 },
+        {fecha: '28/05/2023', venta: 3.675, compra: 3.671},
+        {fecha: '29/05/2023', venta: 3.678, compra: 3.674},
+        {fecha: '30/05/2023', venta: 3.68, compra: 3.667},
       ]
     };
   },
@@ -109,6 +109,19 @@ export default {
       if (confirm('¿Seguro que deseas eliminar este registro?')) {
         this.items.splice(index, 1);
       }
+    },
+    convertToPEN(item) {
+      const currencyIndex = this.tipoDeCambio.findIndex(entry => entry.fecha === item[0]);
+      console.log("Currency Index:", currencyIndex);
+      if (currencyIndex !== -1 && item[2].toLowerCase() === 'usd') {
+        const exchangeRate = this.tipoDeCambio[currencyIndex].compra;
+        console.log("Exchange Rate:", exchangeRate);
+        console.log("Original Amount:", item[3]);
+        const convertedAmount = (parseFloat(item[3]) * exchangeRate).toFixed(2);
+        console.log("Converted Amount:", convertedAmount);
+        return convertedAmount;
+      }
+      return item[3];
     },
   },
 };
